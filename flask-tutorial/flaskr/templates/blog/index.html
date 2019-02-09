@@ -92,7 +92,7 @@
                             </tr>
                             <tr>
                               <th scope="row">Keyword Analysis</th>
-                              <td>{{keywords|default(4, true)}}</td>
+                              <td>{{keywords|default(1, true)}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -133,6 +133,11 @@
                     </form>
                     </div>
                       {% elif g.state == 6 %}
+                        <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+                      <h6 class="text-center" style="margin-top:40px; padding-top:15px; margin:15px;">{{screen_text|default("Unknown Caller", true)}}</h6>
+                      <form method="post" >
+                        <input id="main_text" type="image" src="{{ url_for('static', filename = 'acc_dec_icon.png') }}" style="width:230px; display: block; margin-left: 28px; margin-right: auto; position:absolute; bottom:62px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo1">
+                      </form>
                       {% elif g.state == 7 %}
                     {% endif %}
                     <!--img src="img/demo-screen-1.jpg" class="img-fluid" alt=""-->

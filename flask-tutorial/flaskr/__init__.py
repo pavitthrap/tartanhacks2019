@@ -84,8 +84,8 @@ def analyze_speech(rec):
     print("-----------Sentiment Analysis ", sentiment)
     print("\n")
 
-    # if abs(.5 - sentiment) >= .38:
-    #     counter +=1
+    if abs(.5 - sentiment) >= .38:
+        counter +=1
 
     total_analysis()
 
@@ -148,7 +148,7 @@ speech_recognizer.canceled.connect(lambda evt: print('CANCELED {}'.format(evt)))
 def sustain_speech():
     print("sustain called")
     speech_recognizer.start_continuous_recognition()
-    for i in range(5):
+    for i in range(35):
         time.sleep(.5)
     #print("CURR TEXT IS", curr_text)
     speech_recognizer.stop_continuous_recognition()
@@ -230,19 +230,20 @@ def create_app(test_config=None):
 	        elif 'analysis' in request.form:
 	        	g.state = 3
 	        	screen_text = analysis_result
-	        	sentiment = sentiment_result
+	        	sentiment = round(sentiment_result, 3)
 	        	keywords = keyword_result
 	        	print("analysis result is", analysis_result, sentiment_result, keyword_result)
 	        elif 'homepage' in request.form:
 	        	g.state = 3
 	        	screen_text = analysis_result
 	        	print("analysis result is", analysis_result)
-	        elif 'name=startdemo' == request_JSON:
+	        elif 'name=startdemo' == request_JSON or 'demo1.x' in request.form:
 	        	demo=True
+	        	counter = 0
 	        elif 'name=getupdate' == request_JSON: 
 	        	screen_text = curr_text
 	        elif 'seecall' in request.form: 
-	        	g.state = 1
+	        	g.state = 6
 	        	print("curr text is", curr_text)
 	        	screen_text = curr_text
 	        # print("going to return")
