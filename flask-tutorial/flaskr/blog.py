@@ -6,16 +6,32 @@ from werkzeug.exceptions import abort
 from flaskr.auth import login_required
 from flaskr.db import get_db
 import click
+from flaskr.db import get_db
+import click
 
 bp = Blueprint('blog', __name__)
 
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
+    # row = get_db().execute(
+    #         'SELECT * FROM status WHERE id = (SELECT MAX(id) FROM status);'
+    #     ).fetchone()
+    
     """Show all the posts, most recent first."""
+
+    state = getattr(g, 'state', None)
+    if state is None:
+        g.state = 1
+
+
     if request.method == 'POST':
-        
-        return redirect(url_for('blog.create'))
+        if 'demo1' in request.form:
+            g.state = 2
+        else:
+            g.state = 2
+        return render_template('blog/index.html')
+
     # db = get_db()
     # posts = db.execute(
     #     'SELECT p.id, title, body, created, author_id, username'

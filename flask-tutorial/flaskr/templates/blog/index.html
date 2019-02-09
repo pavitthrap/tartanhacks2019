@@ -19,12 +19,19 @@
                   <div class="screen" style="color:white"> 
                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
                     <!--h3 style="display: block; margin-left: auto; margin-right: auto; margin-top:280px">Device Mockups</h3-->
-                    
+                    {% if g.state == 1 %}
                     <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
                     <h2 class="text-center" style="margin-top:40px">Unknown Caller</h2>
-                    <form method="post">
-                      <input type="image" src="{{ url_for('static', filename = 'acc_dec_icon.png') }}" style="width:200px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit">
+                    <form method="post" name="demo1" value="end">
+                      <input type="image" src="{{ url_for('static', filename = 'acc_dec_icon.png') }}" style="width:200px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" >
                     </form>
+                    {% elif g.state == 2 %}
+                    <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+                    <h2 class="text-center" style="margin-top:40px">Updatable Text</h2>
+                    <form method="post" name="demo1" value="end">
+                      <input type="image'" src="{{ url_for('static', filename = 'end_icon.png') }}" style="width:200px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="End Icon" href="{{ url_for('auth.logout') }}" type="submit">
+                    </form>
+                    {% endif %}
                     <!--img src="img/demo-screen-1.jpg" class="img-fluid" alt=""-->
                   </div>
                    

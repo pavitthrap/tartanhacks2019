@@ -42,7 +42,6 @@ def init_db():
 @with_appcontext
 def init_db_command():
     """Clear existing data and create new tables."""
-    click.echo('init db called')
     init_db()
     click.echo('Initialized the database.')
 
@@ -51,7 +50,5 @@ def init_app(app):
     """Register database functions with the Flask app. This is called by
     the application factory.
     """
-    click.echo('init called')
-
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)

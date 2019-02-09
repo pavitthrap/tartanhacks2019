@@ -44,6 +44,10 @@ def login():
         username = request.form['username']
         password = request.form['password']
         db = get_db()
+
+        # status 
+        
+
         error = None
         user = db.execute(
             'SELECT * FROM user WHERE username = ?', (username,)
@@ -92,4 +96,4 @@ def login_required(view):
 
     return wrapped_view
 
- 
+
