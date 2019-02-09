@@ -19,10 +19,10 @@ A step by step series of examples that tell you how to get a development env run
 **Anusha Chillara**
 **Amulya Musipatla**
 **Namita Dongre**
-**Pavitthra Pandurangan **
+**Pavitthra Pandurangan**
 
 
 ## Acknowledgments
 
-** Berund from Microsoft 
-** Jasmine from Microsoft 
+** Berund from Microsoft**
+** Jasmine from Microsoft**
