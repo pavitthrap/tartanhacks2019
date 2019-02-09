@@ -36,6 +36,7 @@ def stop_cb(evt):
 rec = ""
 
 def analyze_speech(rec):
+    global counter
     documents = {'documents' : [
       {'id': '1', 'language': 'en', 'text': rec},
     ]}
@@ -45,7 +46,6 @@ def analyze_speech(rec):
     key_phrases = response.json()
 
     for document in key_phrases["documents"]:
-        print("iter")
         text    = next(iter(filter(lambda d: d["id"] == document["id"], documents["documents"])))["text"]
         phrases = ",".join(document["keyPhrases"])
         print("\n")
@@ -54,8 +54,9 @@ def analyze_speech(rec):
     analyze_it(rec, phrases)
 
     response  = requests.post(senti_phrase_api_url, headers=headers, json=documents)
-    sentiment = response.json()
-    print("-----------Sentiment Analysis: ", sentiment['score'])
+    sentiment = response.json().get("documents")[0].get("score")
+
+    print("-----------Sentiment Analysis ", sentiment)
     print("\n")
 
     # if abs(.5 - sentiment) >= .38:
@@ -65,6 +66,8 @@ def analyze_speech(rec):
 
 
 def total_analysis():
+    global counter
+    print(counter)
     if counter >= 6:
         print("-----------HIGH RISK ALERT - NOTIFYING BANK")
         #HIGH RISK, NOTIFY BANK - DISPLAY HOW HIGH
@@ -82,7 +85,7 @@ def total_analysis():
 
 
 def analyze_it(sentence, phrases):
-    nonlocal counter
+    global counter
     triggerWords = ['gift', 'cards', 'gift cards', 'IRS', 'warranty', 'Medicare', 'insurance', 'social',
                     'social security', 'bank', 'routing', 'number', 'tax', 'dollars', 'owe',
                     'business listing', 'fee', 'interest', 'interest rate', 'loans', 'overdue', 'debt'
@@ -92,7 +95,7 @@ def analyze_it(sentence, phrases):
                     'payment', 'lottery', 'trust', 'investment', 'subscription', 'can you hear me?',
                     'federal reserve', 'retirement', 'ROTH IRA', 'senior', '401k', 'tech support',
                     'Mark Zuckerberg', 'safe', 'virus', 'password', 'safety', 'lucky', 'won', 'winner',
-                    'charity', 'pin number', 'pin', 'million']
+                    'charity', 'pin number', 'pin', 'million', 'fraudulent activities']
 
     for word in triggerWords:
         if word.lower() in phrases.lower() or word.lower() in sentence.lower():
