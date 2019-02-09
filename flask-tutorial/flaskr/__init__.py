@@ -1,7 +1,168 @@
 import os 
 
-from flask import Flask
+from flask import Flask, g, render_template, request, url_for
+import json 
+import threading
 #from . import db
+
+def after_this_request(f):
+	print("after called")
+	if not hasattr(g, 'after_request_callbacks'):
+		g.after_request_callbacks = []
+	g.after_request_callbacks.append(f)
+	return f
+
+###############################
+import azure.cognitiveservices.speech as speechsdk
+import time
+import requests
+from pprint import pprint
+import re
+
+counter = 0
+
+subscription_key = "cc5ab8a32df6484981ec582e6669bd36"
+assert subscription_key
+
+text_analytics_base_url = "https://eastus2.api.cognitive.microsoft.com/text/analytics/v2.0"
+
+
+speech_key = "6fd6a1d3a05742f8bfaf9ffdccfffbb6"
+service_region = "westus"
+key_phrase_api_url = text_analytics_base_url + "/keyPhrases"
+senti_phrase_api_url = text_analytics_base_url + "/sentiment"
+
+speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
+
+# Set up the speech recognizer
+speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
+
+done = False
+
+
+#################
+
+demo = False
+curr_text = ""
+
+
+def update_curr_text(text):
+	global curr_text
+	curr_text = text
+	#print("updating curr text", curr_text)
+
+########################
+# Connect callbacks to the events fired by the speech recognizer
+rec = ""
+
+def analyze_speech(rec):
+    global counter, curr_text
+    time.sleep(3)
+    curr_text = ""
+    documents = {'documents' : [
+      {'id': '1', 'language': 'en', 'text': rec},
+    ]}
+
+    headers   = {'Ocp-Apim-Subscription-Key': subscription_key}
+    response  = requests.post(key_phrase_api_url, headers=headers, json=documents)
+    key_phrases = response.json()
+
+    for document in key_phrases["documents"]:
+        text    = next(iter(filter(lambda d: d["id"] == document["id"], documents["documents"])))["text"]
+        phrases = ",".join(document["keyPhrases"])
+        print("\n")
+        print("-----------Key Phrases Extracted: ", phrases)
+
+    analyze_it(rec, phrases)
+
+    response  = requests.post(senti_phrase_api_url, headers=headers, json=documents)
+    sentiment = response.json().get("documents")[0].get("score")
+
+    print("-----------Sentiment Analysis ", sentiment)
+    print("\n")
+
+    # if abs(.5 - sentiment) >= .38:
+    #     counter +=1
+
+    total_analysis()
+
+
+def total_analysis():
+    global counter
+    print(counter)
+    if counter >= 6:
+        print("-----------HIGH RISK ALERT - NOTIFYING BANK")
+        #HIGH RISK, NOTIFY BANK - DISPLAY HOW HIGH
+    elif counter >= 4:
+        print("-----------MEDIUM RISK ALERT - NOTIFYING BANK")
+        #MEDIUM RISK
+    elif counter >= 2:
+        print("-----------LOW RISK ALERT - NOTIFYING BANK")
+        #
+    else:
+        print("-----------VERY LOW RISK")
+    print("\n")
+
+
+
+
+def analyze_it(sentence, phrases):
+    global counter
+    triggerWords = ['gift', 'cards', 'gift cards', 'IRS', 'warranty', 'Medicare', 'insurance', 'social',
+                    'social security', 'bank', 'routing', 'number', 'tax', 'dollars', 'owe',
+                    'business listing', 'fee', 'interest', 'interest rate', 'loans', 'overdue', 'debt'
+                    'verification', 'offer', 'limited time', 'important', 'urgent', 'credit', 'credit card',
+                    'cover up', 'viagra', 'anti-aging', 'metabolism', 'bitcoin', 'illegal', 'donation',
+                    'free vacation', 'free', 'loan', "you've won", 'low risk', 'free bonus', 'bonus',
+                    'payment', 'lottery', 'trust', 'investment', 'subscription', 'can you hear me?',
+                    'federal reserve', 'retirement', 'ROTH IRA', 'senior', '401k', 'tech support',
+                    'Mark Zuckerberg', 'safe', 'virus', 'password', 'safety', 'lucky', 'won', 'winner',
+                    'charity', 'pin number', 'pin', 'million', 'fraudulent activities']
+
+    for word in triggerWords:
+        if word.lower() in phrases.lower() or word.lower() in sentence.lower():
+            counter+=1
+
+    m = re.findall('([0-9]{2}[0-9]+)', sentence)
+    counter += len(m)
+
+
+##########################
+speech_recognizer.recognizing.connect(lambda evt: update_curr_text(evt.result.text))
+speech_recognizer.recognized.connect(lambda evt: analyze_speech(rec.join(evt.result.text)))
+speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
+speech_recognizer.session_stopped.connect(lambda evt: print('SESSION STOPPED {}'.format(evt)))
+speech_recognizer.canceled.connect(lambda evt: print('CANCELED {}'.format(evt)))
+# stop continuous recognition on either session stopped or canceled events
+
+#################################################
+
+def sustain_speech():
+    print("sustain called")
+    speech_recognizer.start_continuous_recognition()
+    for i in range(15):
+        time.sleep(.5)
+    print("CURR TEXT IS", curr_text)
+    speech_recognizer.stop_continuous_recognition()
+
+def stop_cb(evt):
+    #"""callback that stops continuous recognition upon receiving an event `evt`"""
+    print('CLOSING on {}'.format(evt))
+    speech_recognizer.stop_continuous_recognition()
+    done = True
+
+ ################################################
+
+speech_recognizer.session_stopped.connect(stop_cb)
+speech_recognizer.canceled.connect(stop_cb)
+
+
+
+
+
+
+
+
 
 def create_app(test_config=None):
 	# create and configure the app 
@@ -24,12 +185,59 @@ def create_app(test_config=None):
 		os.makedirs(app.instance_path)
 	except OSError:
 		pass
-	
 
     # a simple page that says hello 
 	@app.route('/hello')
 	def hello():
 		return 'Hello, World!'
+
+	#@app.before_request	
+	@app.route('/', methods=('GET', 'POST'))
+	def index(screen_text="Unknown Caller!"):
+	    # row = get_db().execute(
+	    #         'SELECT * FROM status WHERE id = (SELECT MAX(id) FROM status);'
+	    #     ).fetchone()
+	    
+	    """Show all the posts, most recent first."""
+	    #print("show index")
+	    global demo, curr_text
+	    state = getattr(g, 'state', None)
+	    if state is None:
+	        g.state = 1
+
+
+	    if request.method == 'POST':
+	        #print(dir(request))
+	        
+	        request_JSON = request.data
+	        #print(request_JSON)
+	        #request_JSON = json.dumps(request_JSON)
+	        request_JSON = request_JSON.decode('utf-8')
+	        #print(request_JSON)
+	        if 'phonedemo' in request.form:
+	        	print("1")
+	        	g.state = 1
+	        elif 'appdemo' in request.form:
+	        	print("2")
+	        	g.state = 4
+	        elif 'name=startdemo' == request_JSON:
+	        	print("STARTTTT")
+	        	demo=True
+	        	print("demo is NOW", demo)
+	        elif 'name=getupdate' == request_JSON: 
+	        	print("GET UPDATE", curr_text)
+	        	screen_text = curr_text
+
+	        # print("going to return")
+	        return render_template('blog/index.html', screen_text=curr_text)
+
+	    # db = get_db()
+	    # posts = db.execute(
+	    #     'SELECT p.id, title, body, created, author_id, username'
+	    #     ' FROM post p JOIN user u ON p.author_id = u.id'
+	    #     ' ORDER BY created DESC'
+	    # ).fetchall()
+	    return render_template('blog/index.html')
 
 	from flaskr import db
 	db.init_app(app)
@@ -41,6 +249,17 @@ def create_app(test_config=None):
 	app.register_blueprint(blog.bp)
 	app.add_url_rule('/', endpoint='index')
 
+	@app.before_first_request
+	def activate_job():
+	    def run_demo():
+	        global demo
+	        while not demo:
+	        	time.sleep(1)
+	        	pass
+	        print("demo is gn start")
+	        sustain_speech()
 
+	    thread = threading.Thread(target=run_demo)
+	    thread.start()
 
 	return app

@@ -1,6 +1,35 @@
 {% extends 'base.html' %}
 
 {% block mainbody %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+      
+      var updateFunction = function(){
+          for(var j=0; j<1000; j++){
+            $.ajax({
+              type : 'POST',
+              url : "{{url_for('index')}}",
+              contentType: 'application/json;charset=UTF-8',
+              data : {'name': 'getupdate',},
+            });
+          }
+      }
+
+      $(function() {
+        $('input#main_text').bind('click', function() {
+          clicked = $(this).attr("text");
+          $.ajax({
+            type : 'POST',
+            url : "{{url_for('index')}}",
+            contentType: 'application/json;charset=UTF-8',
+            data : {'name': 'startdemo',},
+          }).delay(400).done(updateFunction);
+        });
+      })
+    </script>
+ 
+
   <!-- <h1>{% block title %}Hello{% endblock %}</h1> -->
   {% if g.user %}
     <!--a class="action" href="{{ url_for('blog.create') }}">New</a-->
@@ -27,9 +56,9 @@
                     <!--h3 style="display: block; margin-left: auto; margin-right: auto; margin-top:280px">Device Mockups</h3-->
                     {% if g.state == 1 %}
                     <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
-                    <h2 class="text-center" style="margin-top:40px">Unknown Caller</h2>
+                    <h2 class="text-center" style="margin-top:40px">{{screen_text|default("Unknown Caller", true)}}</h2>
                     <form method="post" >
-                      <input type="image" src="{{ url_for('static', filename = 'acc_dec_icon.png') }}" style="width:230px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo1">
+                      <input id="main_text" type="image" src="{{ url_for('static', filename = 'acc_dec_icon.png') }}" style="width:230px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo1">
                     </form>
 
                     {% elif g.state == 2 %}
