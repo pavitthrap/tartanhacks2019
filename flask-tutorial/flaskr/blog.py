@@ -17,7 +17,7 @@ def index():
     # row = get_db().execute(
     #         'SELECT * FROM status WHERE id = (SELECT MAX(id) FROM status);'
     #     ).fetchone()
-    
+
     """Show all the posts, most recent first."""
 
     state = getattr(g, 'state', None)
@@ -30,7 +30,7 @@ def index():
         if 'phonedemo' in request.form:
             g.state = 1
         elif 'appdemo' in request.form:
-            g.state = 4
+            g.state = 3
         elif 'demo1.x' in request.form:
             g.state = 2
         else:
