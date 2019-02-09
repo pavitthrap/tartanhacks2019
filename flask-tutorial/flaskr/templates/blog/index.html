@@ -38,6 +38,11 @@
                     <form method="post" >
                       <input type="image" src="{{ url_for('static', filename = 'end_icon.png') }}" style="width:60px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo2">
                     </form>
+                      {% elif g.state == 3 %}
+                      {% elif g.state == 4 %}
+                      {% elif g.state == 5 %}
+                      {% elif g.state == 6 %}
+                      {% elif g.state == 7 %}
                     {% endif %}
                     <!--img src="img/demo-screen-1.jpg" class="img-fluid" alt=""-->
                   </div>
