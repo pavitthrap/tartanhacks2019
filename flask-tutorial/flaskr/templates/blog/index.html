@@ -6,14 +6,16 @@
     <script type=text/javascript>
       
       var updateFunction = function(){
-          for(var j=0; j<1000; j++){
+          var updater = window.setInterval(function() {
             $.ajax({
               type : 'POST',
               url : "{{url_for('index')}}",
               contentType: 'application/json;charset=UTF-8',
               data : {'name': 'getupdate',},
             });
-          }
+          }, 500); 
+          window.setTimeout(function() {clearInterval(updater);},8000);
+          
       }
 
       $(function() {

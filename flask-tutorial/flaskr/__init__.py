@@ -255,6 +255,7 @@ def create_app(test_config=None):
 	        global demo
 	        while not demo:
 	        	time.sleep(1)
+	        	print("value of demo", demo)
 	        	pass
 	        print("demo is gn start")
 	        sustain_speech()
