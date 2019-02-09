@@ -27,13 +27,14 @@ def index():
 
     if request.method == 'POST':
         print(request.form)
-        if 'demo1.x' in request.form:
-            g.state = 2
-            print("yo")
-
-        else:
-            print("hey")
+        if 'phonedemo' in request.form:
             g.state = 1
+        elif 'appdemo' in request.form:
+            g.state = 5
+        elif 'demo1.x' in request.form:
+            g.state = 2
+        else:
+            g.state = 3
         return render_template('blog/index.html')
 
     # db = get_db()
