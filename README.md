@@ -12,6 +12,8 @@ A step by step series of examples that tell you how to get a development env run
 ## Built With
 
 * [Azure Microsft Speech to Text API](https://azure.microsoft.com/en-us/services/cognitive-services/speech-to-text/)
+* [Azure Sentiment Analysis API](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-keyword-extraction)
+* [Azure KeyPhrase Extractor API](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/)
 
 
 ## Authors ## 
