@@ -45,7 +45,16 @@ done = False
 demo = False
 curr_text = ""
 
-speech_recognizer.recognizing.connect(lambda evt: curr_text.join(evt.result.text))
+
+def update_curr_text(text):
+	global curr_text
+	curr_text = text
+	#print("updating curr text", curr_text)
+
+
+
+
+speech_recognizer.recognizing.connect(lambda evt: update_curr_text(evt.result.text))
 speech_recognizer.recognized.connect(lambda evt: analyze_speech(rec.join(evt.result.text)))
 speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
 speech_recognizer.session_stopped.connect(lambda evt: print('SESSION STOPPED {}'.format(evt)))
@@ -116,8 +125,8 @@ def create_app(test_config=None):
 	    #     ).fetchone()
 	    
 	    """Show all the posts, most recent first."""
-	    print("show index")
-	    global demo
+	    #print("show index")
+	    global demo, curr_text
 	    state = getattr(g, 'state', None)
 	    if state is None:
 	        g.state = 1
@@ -127,10 +136,10 @@ def create_app(test_config=None):
 	        #print(dir(request))
 	        
 	        request_JSON = request.data
-	        print(request_JSON)
+	        #print(request_JSON)
 	        #request_JSON = json.dumps(request_JSON)
 	        request_JSON = request_JSON.decode('utf-8')
-	        print(request_JSON)
+	        #print(request_JSON)
 	        if 'phonedemo' in request.form:
 	        	print("1")
 	        	g.state = 1
@@ -142,10 +151,10 @@ def create_app(test_config=None):
 	        	demo=True
 	        	print("demo is NOW", demo)
 	        elif 'name=getupdate' == request_JSON: 
-	        	#print("GET UPDATE")
+	        	print("GET UPDATE", curr_text)
 	        	screen_text = curr_text
 
-	        print("going to return")
+	        # print("going to return")
 	        return render_template('blog/index.html', screen_text=curr_text)
 
 	    # db = get_db()

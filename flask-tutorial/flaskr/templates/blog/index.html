@@ -24,7 +24,7 @@
             url : "{{url_for('index')}}",
             contentType: 'application/json;charset=UTF-8',
             data : {'name': 'startdemo',},
-          }).done(updateFunction);
+          }).delay(400).done(updateFunction);
         });
       })
     </script>
