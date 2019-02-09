@@ -436,3 +436,16 @@ footer ul li a:hover, footer ul li a:focus, footer ul li a:active, footer ul li 
   font-size: 11px;
   padding: 15px 45px;
 }
+
+
+.center_img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
+
+
+.margin_up {
+   margin-top: 30px;
+}
