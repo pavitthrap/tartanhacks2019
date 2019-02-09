@@ -227,6 +227,10 @@ def create_app(test_config=None):
 	        	g.state = 4
 	        elif 'enterapp.x' in request.form:
 	        	g.state = 5
+	        elif 'bankacct' in request.form:
+	        	g.state = 7
+	        elif 'mainscreen' in request.form:
+	        	g.state = 8
 	        elif 'analysis' in request.form:
 	        	g.state = 3
 	        	screen_text = analysis_result
