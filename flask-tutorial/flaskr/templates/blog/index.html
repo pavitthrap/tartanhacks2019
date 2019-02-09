@@ -33,6 +33,7 @@
   <!-- <h1>{% block title %}Hello{% endblock %}</h1> -->
   {% if g.user %}
     <!--a class="action" href="{{ url_for('blog.create') }}">New</a-->
+
       <div class="container h-100">
         <div class="row h-100">
           <div class="col-lg-3 my-auto">
@@ -50,7 +51,7 @@
             <div class="device-container">
               <div class="device-mockup iphone6_plus portrait white">
                 <div class="device">
-                  <div class="screen" style="color:white"> 
+                  <div class="screen" style="color:white">
                     <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
                     <!--h3 style="display: block; margin-left: auto; margin-right: auto; margin-top:280px">Device Mockups</h3-->
                     {% if g.state == 1 %}
@@ -66,18 +67,79 @@
                     <form method="post" >
                       <input type="image" src="{{ url_for('static', filename = 'end_icon.png') }}" style="width:60px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo2">
                     </form>
+                    <!-- FINAL STATE SCREEN NOTIFIES BANKS AND USER AND THREAT LEVEL STATS -->
                       {% elif g.state == 3 %}
+                      <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+                      <h3 class="text-center" font face="verdana" style="margin-top:40px">Threat Level : High </h3>
+                      <table class="table table-borderless">
+                          <thead>
+                            <tr>
+                              <th scope="col">Analysis</th>
+                              <th scope="col">Level</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">Sentiment Analysis</th>
+                              <td>.9<td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Keyword Analysis</th>
+                              <td>7</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                      <h6 class="text-center" style="margin-top:20px">
+                      We have notified your bank to keep watch for any transactions in the
+                    next 15 minutes. </h6>
+
+                      <form method="post" >
+                        <input type="image" src="{{ url_for('static', filename = 'end_icon.png') }}" style="width:60px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo2">
+                      </form>
+
+                      <!-- homepage with the picture of our logo and the title of of our app -->
                       {% elif g.state == 4 %}
+                      <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+                      <h2 class="text-center" style="margin-top:40px">Scam Stopper</h2>
+                      <form method="post" >
+                        <input type="image" src="{{ url_for('static', filename = 'logo.png') }}" style="width:230px; display: block; margin-left: auto; margin-right: auto; margin-top:10px" alt="Scam pic" type="submit" name="scam">
+                      </form>
+
+
+                      <!-- SIGN UP PAGE -->
                       {% elif g.state == 5 %}
+                      <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+
+                      <h3 class="text-center" font face="verdana" style="margin-top:40px">Scam Stopper</h3>
+
+                      <div class="container center_div">
+                      <form>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                      </div>
+                      <div class="form-group">
+                        <label for="examplePhoneNumber">Phone Number</label>
+                        <input type="tel" class="form-control" id="exampleInputNumber" placeholder="Enter Phone Number">
+                      </div>
+                      <div class="container center_div">
+                        <button type="submit" style="margin-top:20px" class="btn btn-primary">Connect to your Bank Account</button>
+                      </div>
+                    </form>
+                    </div>
+
+
                       {% elif g.state == 6 %}
                       {% elif g.state == 7 %}
                     {% endif %}
                     <!--img src="img/demo-screen-1.jpg" class="img-fluid" alt=""-->
                   </div>
-                   
-                  <div class="button"> 
+
+                  <div class="button">
                     <!-- You can hook the "home button" to some JavaScript events or just remove it -->
-      
+
                   </div>
 
                 </div>
@@ -85,16 +147,16 @@
             </div>
           </div>
           <div class="col-lg-3 my-auto">
-           
+
           </div>
         </div>
       </div>
-    
+
   {% endif %}
 
 
 {% endblock %}
 
 {% block content %}
-  
+
 {% endblock %}

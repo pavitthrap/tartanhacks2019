@@ -12,6 +12,7 @@ import click
 bp = Blueprint('blog', __name__)
 
 
+
 # setup speech recognition
 #################################################
 # import azure.cognitiveservices.speech as speechsdk
@@ -20,10 +21,12 @@ bp = Blueprint('blog', __name__)
 # from pprint import pprint
 # import re
 
+
 # counter = 0
 
 # subscription_key = "cc5ab8a32df6484981ec582e6669bd36"
 # assert subscription_key
+
 
 # text_analytics_base_url = "https://eastus2.api.cognitive.microsoft.com/text/analytics/v2.0"
 
@@ -108,6 +111,27 @@ bp = Blueprint('blog', __name__)
 #     #     ' ORDER BY created DESC'
 #     # ).fetchall()
 #     return render_template('blog/index.html')
+
+    if request.method == 'POST':
+        print(request.form)
+        if 'phonedemo' in request.form:
+            g.state = 1
+        elif 'appdemo' in request.form:
+            g.state = 5
+        elif 'demo1.x' in request.form:
+            g.state = 2
+        else:
+            g.state = 3
+        return render_template('blog/index.html')
+
+    # db = get_db()
+    # posts = db.execute(
+    #     'SELECT p.id, title, body, created, author_id, username'
+    #     ' FROM post p JOIN user u ON p.author_id = u.id'
+    #     ' ORDER BY created DESC'
+    # ).fetchall()
+    return render_template('blog/index.html')
+
 
 
 def get_post(id, check_author=True):
