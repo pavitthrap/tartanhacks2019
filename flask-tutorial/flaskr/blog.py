@@ -81,7 +81,7 @@ bp = Blueprint('blog', __name__)
 #     # row = get_db().execute(
 #     #         'SELECT * FROM status WHERE id = (SELECT MAX(id) FROM status);'
 #     #     ).fetchone()
-    
+
 #     """Show all the posts, most recent first."""
 
 #     state = getattr(g, 'state', None)
@@ -112,17 +112,17 @@ bp = Blueprint('blog', __name__)
 #     # ).fetchall()
 #     return render_template('blog/index.html')
 
-    if request.method == 'POST':
-        print(request.form)
-        if 'phonedemo' in request.form:
-            g.state = 1
-        elif 'appdemo' in request.form:
-            g.state = 5
-        elif 'demo1.x' in request.form:
-            g.state = 2
-        else:
-            g.state = 3
-        return render_template('blog/index.html')
+    # if request.method == 'POST':
+    #     print(request.form)
+    #     if 'phonedemo' in request.form:
+    #         g.state = 1
+    #     elif 'appdemo' in request.form:
+    #         g.state = 5
+    #     elif 'demo1.x' in request.form:
+    #         g.state = 2
+    #     else:
+    #         g.state = 3
+    #     return render_template('blog/index.html')
 
     # db = get_db()
     # posts = db.execute(
@@ -130,7 +130,7 @@ bp = Blueprint('blog', __name__)
     #     ' FROM post p JOIN user u ON p.author_id = u.id'
     #     ' ORDER BY created DESC'
     # ).fetchall()
-    return render_template('blog/index.html')
+    # return render_template('blog/index.html')
 
 
 

@@ -104,28 +104,16 @@
                       <form method="post" >
                         <input type="image" src="{{ url_for('static', filename = 'end_icon.png') }}" style="width:60px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo2">
                       </form>
-<<<<<<< HEAD
 
-                      <!-- homepage with the picture of our logo and the title of of our app -->
-=======
->>>>>>> d86fdfa3c6db381c80a677985cd29bbfb40b6bb8
                       {% elif g.state == 4 %}
                       <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
                       <h2 class="text-center" style="margin-top:40px">Scam Stopper</h2>
                       <form method="post" >
-<<<<<<< HEAD
-                        <input type="image" src="{{ url_for('static', filename = 'logo.png') }}" style="width:230px; display: block; margin-left: auto; margin-right: auto; margin-top:10px" alt="Scam pic" type="submit" name="scam">
-                      </form>
 
-
-                      <!-- SIGN UP PAGE -->
-                      {% elif g.state == 5 %}
-=======
                         <input type="image" src="{{ url_for('static', filename = 'logo.png') }}" style="width:230px; display: block; margin-left: auto; margin-right: auto; margin-top:10px" alt="Scam pic" type="submit" name="enterapp">
                       </form>
 
                        {% elif g.state == 5 %}
->>>>>>> d86fdfa3c6db381c80a677985cd29bbfb40b6bb8
                       <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
 
                       <h3 class="text-center" font face="verdana" style="margin-top:40px">Scam Stopper</h3>
@@ -146,11 +134,7 @@
                       </div>
                     </form>
                     </div>
-<<<<<<< HEAD
 
-
-=======
->>>>>>> d86fdfa3c6db381c80a677985cd29bbfb40b6bb8
                       {% elif g.state == 6 %}
                         <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
                       <h6 class="text-center" style="margin-top:40px; padding-top:15px; margin:15px;">{{screen_text|default("Unknown Caller", true)}}</h6>
