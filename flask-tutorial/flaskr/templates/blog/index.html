@@ -65,15 +65,19 @@
                       We have notified your bank to keep watch for any transactions in the
                     next 15 minutes. </h6>
 
-
-
-
-
                       <form method="post" >
                         <input type="image" src="{{ url_for('static', filename = 'end_icon.png') }}" style="width:60px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit" name="demo2">
                       </form>
 
+
+                      <!-- homepage with the picture of our logo and the title of of our app --> 
                       {% elif g.state == 4 %}
+
+                      <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+                      <h2 class="text-center" style="margin-top:40px">Scamulya</h2>
+                      <form method="post" >
+                        <input type="image" src="{{ url_for('static', filename = 'scam.jpg') }}" style="width:230px; display: block; margin-left: auto; margin-right: auto; margin-top:10px" alt="Scam pic" type="submit" name="scam">
+                      </form>
                       {% elif g.state == 5 %}
                       {% elif g.state == 6 %}
                       {% elif g.state == 7 %}

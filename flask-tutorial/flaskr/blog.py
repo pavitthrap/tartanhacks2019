@@ -30,7 +30,7 @@ def index():
         if 'phonedemo' in request.form:
             g.state = 1
         elif 'appdemo' in request.form:
-            g.state = 3
+            g.state = 4
         elif 'demo1.x' in request.form:
             g.state = 2
         else:
