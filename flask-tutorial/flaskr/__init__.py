@@ -51,9 +51,83 @@ def update_curr_text(text):
 	curr_text = text
 	#print("updating curr text", curr_text)
 
+########################
+# Connect callbacks to the events fired by the speech recognizer
+rec = ""
+
+def analyze_speech(rec):
+    global counter, curr_text
+    time.sleep(3)
+    curr_text = ""
+    documents = {'documents' : [
+      {'id': '1', 'language': 'en', 'text': rec},
+    ]}
+
+    headers   = {'Ocp-Apim-Subscription-Key': subscription_key}
+    response  = requests.post(key_phrase_api_url, headers=headers, json=documents)
+    key_phrases = response.json()
+
+    for document in key_phrases["documents"]:
+        text    = next(iter(filter(lambda d: d["id"] == document["id"], documents["documents"])))["text"]
+        phrases = ",".join(document["keyPhrases"])
+        print("\n")
+        print("-----------Key Phrases Extracted: ", phrases)
+
+    analyze_it(rec, phrases)
+
+    response  = requests.post(senti_phrase_api_url, headers=headers, json=documents)
+    sentiment = response.json().get("documents")[0].get("score")
+
+    print("-----------Sentiment Analysis ", sentiment)
+    print("\n")
+
+    # if abs(.5 - sentiment) >= .38:
+    #     counter +=1
+
+    total_analysis()
+
+
+def total_analysis():
+    global counter
+    print(counter)
+    if counter >= 6:
+        print("-----------HIGH RISK ALERT - NOTIFYING BANK")
+        #HIGH RISK, NOTIFY BANK - DISPLAY HOW HIGH
+    elif counter >= 4:
+        print("-----------MEDIUM RISK ALERT - NOTIFYING BANK")
+        #MEDIUM RISK
+    elif counter >= 2:
+        print("-----------LOW RISK ALERT - NOTIFYING BANK")
+        #
+    else:
+        print("-----------VERY LOW RISK")
+    print("\n")
 
 
 
+
+def analyze_it(sentence, phrases):
+    global counter
+    triggerWords = ['gift', 'cards', 'gift cards', 'IRS', 'warranty', 'Medicare', 'insurance', 'social',
+                    'social security', 'bank', 'routing', 'number', 'tax', 'dollars', 'owe',
+                    'business listing', 'fee', 'interest', 'interest rate', 'loans', 'overdue', 'debt'
+                    'verification', 'offer', 'limited time', 'important', 'urgent', 'credit', 'credit card',
+                    'cover up', 'viagra', 'anti-aging', 'metabolism', 'bitcoin', 'illegal', 'donation',
+                    'free vacation', 'free', 'loan', "you've won", 'low risk', 'free bonus', 'bonus',
+                    'payment', 'lottery', 'trust', 'investment', 'subscription', 'can you hear me?',
+                    'federal reserve', 'retirement', 'ROTH IRA', 'senior', '401k', 'tech support',
+                    'Mark Zuckerberg', 'safe', 'virus', 'password', 'safety', 'lucky', 'won', 'winner',
+                    'charity', 'pin number', 'pin', 'million', 'fraudulent activities']
+
+    for word in triggerWords:
+        if word.lower() in phrases.lower() or word.lower() in sentence.lower():
+            counter+=1
+
+    m = re.findall('([0-9]{2}[0-9]+)', sentence)
+    counter += len(m)
+
+
+##########################
 speech_recognizer.recognizing.connect(lambda evt: update_curr_text(evt.result.text))
 speech_recognizer.recognized.connect(lambda evt: analyze_speech(rec.join(evt.result.text)))
 speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
