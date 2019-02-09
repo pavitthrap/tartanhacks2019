@@ -48,7 +48,10 @@
               <input name="phonedemo" href="#download" class="btn btn-outline btn-xl js-scroll-trigger" style="margin-top:30px;" type="submit" value="Phone Demo">
             </form>
             <form method="post" >
-              <input name="analysis" href="#download" class="btn btn-outline btn-xl js-scroll-trigger" style="margin-top:30px;" type="submit" value="Phone Analysis">
+              <input name="analysis" href="#download" class="btn btn-outline btn-xl js-scroll-trigger" style="margin-top:30px;" type="submit" value="Call Analysis">
+            </form>
+            <form method="post" >
+              <input name="seecall" href="#download" class="btn btn-outline btn-xl js-scroll-trigger" style="margin-top:30px;" type="submit" value="See Transcript">
             </form>
           </div>
           <div class="col-lg-6 my-auto">
@@ -85,11 +88,11 @@
                           <tbody>
                             <tr>
                               <th scope="row">Sentiment Analysis</th>
-                              <td>.9<td>
+                              <td>{{sentiment|default(0.9, true)}}<td>
                             </tr>
                             <tr>
                               <th scope="row">Keyword Analysis</th>
-                              <td>7</td>
+                              <td>{{keywords|default(4, true)}}</td>
                             </tr>
                           </tbody>
                         </table>
