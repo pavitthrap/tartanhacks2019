@@ -46,7 +46,7 @@ def login():
         db = get_db()
 
         # status 
-        
+
 
         error = None
         user = db.execute(
@@ -82,7 +82,7 @@ def load_logged_in_user():
 @bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('auth.login'))
 
 
 

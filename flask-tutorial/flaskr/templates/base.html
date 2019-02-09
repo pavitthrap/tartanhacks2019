@@ -91,10 +91,9 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
            {% if g.user %}
-            <li class="nav-item"><span>{{ g.user['username'] }}</span>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
               <li class="nav-item">
-                  <a class="nav-link js-scroll-trigger" href="{{ url_for('auth.login') }}">Download</a>
+                  <a class="nav-link js-scroll-trigger" href="{{ url_for('blog.register_beta') }}">Register for Beta</a>
                 </li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
