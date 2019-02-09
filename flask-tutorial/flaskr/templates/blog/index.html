@@ -1,10 +1,48 @@
 {% extends 'base.html' %}
 
-{% block header %}
-  <h1>{% block title %}Hello{% endblock %}</h1>
+{% block mainbody %}
+  <!-- <h1>{% block title %}Hello{% endblock %}</h1> -->
   {% if g.user %}
-    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+    <!--a class="action" href="{{ url_for('blog.create') }}">New</a-->
+    
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-lg-7 my-auto">
+            <div class="header-content mx-auto">
+              <h1 class="mb-5">See how Scam Stopper can help!</h1>
+            </div>
+          </div>
+          <div class="col-lg-5 my-auto">
+            <div class="device-container">
+              <div class="device-mockup iphone6_plus portrait white">
+                <div class="device">
+                  <div class="screen" style="color:white"> 
+                    <!-- Demo image for screen mockup, you can put an image here, some HTML, an animation, video, or anything else! -->
+                    <!--h3 style="display: block; margin-left: auto; margin-right: auto; margin-top:280px">Device Mockups</h3-->
+                    
+                    <img src="{{ url_for('static', filename = 'iphone-status.png') }}" style="width:100%;" alt="Iphone">
+                    <h2 class="text-center" style="margin-top:40px">Unknown Caller</h2>
+                    <form method="post">
+                      <input type="image" src="{{ url_for('static', filename = 'acc_dec_icon.png') }}" style="width:200px; display: block; margin-left: auto; margin-right: auto; margin-top:260px" alt="Call Icon" href="{{ url_for('auth.logout') }}" type="submit">
+                    </form>
+                    <!--img src="img/demo-screen-1.jpg" class="img-fluid" alt=""-->
+                  </div>
+                   
+                  <div class="button"> 
+                    <!-- You can hook the "home button" to some JavaScript events or just remove it -->
+      
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
   {% endif %}
+
+
 {% endblock %}
 
 {% block content %}
