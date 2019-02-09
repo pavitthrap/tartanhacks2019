@@ -44,6 +44,7 @@ done = False
 
 demo = False
 curr_text = ""
+analysis_result = ""
 
 
 def update_curr_text(text):
@@ -91,15 +92,19 @@ def total_analysis():
     global counter
     print(counter)
     if counter >= 6:
+        analysis_result = "HIGH RISK - NOTIFYING BANK"
         print("-----------HIGH RISK ALERT - NOTIFYING BANK")
         #HIGH RISK, NOTIFY BANK - DISPLAY HOW HIGH
     elif counter >= 4:
+        analysis_result = "MEDIUM RISK - NOTIFYING BANK"
         print("-----------MEDIUM RISK ALERT - NOTIFYING BANK")
         #MEDIUM RISK
     elif counter >= 2:
+        analysis_result = "LOW RISK - NOTIFYING BANK"
         print("-----------LOW RISK ALERT - NOTIFYING BANK")
         #
     else:
+        analysis_result = "VERY LOW RISK"
         print("-----------VERY LOW RISK")
     print("\n")
 
@@ -128,7 +133,7 @@ def analyze_it(sentence, phrases):
 
 
 ##########################
-speech_recognizer.recognizing.connect(lambda evt: update_curr_text(evt.result.text))
+speech_recognizer.recognizing.connect(lambda evt: print(evt.result.text))
 speech_recognizer.recognized.connect(lambda evt: analyze_speech(rec.join(evt.result.text)))
 speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
 speech_recognizer.session_stopped.connect(lambda evt: print('SESSION STOPPED {}'.format(evt)))
@@ -202,12 +207,13 @@ def create_app(test_config=None):
 	    #print("show index")
 	    global demo, curr_text
 	    state = getattr(g, 'state', None)
+	    screen_text = ""
 	    if state is None:
 	        g.state = 1
 
 
 	    if request.method == 'POST':
-	        #print(dir(request))
+	        print(request.form)
 	        
 	        request_JSON = request.data
 	        #print(request_JSON)
@@ -215,21 +221,24 @@ def create_app(test_config=None):
 	        request_JSON = request_JSON.decode('utf-8')
 	        #print(request_JSON)
 	        if 'phonedemo' in request.form:
-	        	print("1")
 	        	g.state = 1
 	        elif 'appdemo' in request.form:
-	        	print("2")
 	        	g.state = 4
+	        elif 'enterapp.x' in request.form:
+	        	g.state = 5
+	        elif 'analysis' in request.form:
+	        	g.state = 3
+	        	screen_text = analysis_result
+	        elif 'homepage' in request.form:
+	        	g.state = 3
+	        	screen_text = analysis_result
 	        elif 'name=startdemo' == request_JSON:
-	        	print("STARTTTT")
 	        	demo=True
-	        	print("demo is NOW", demo)
 	        elif 'name=getupdate' == request_JSON: 
-	        	print("GET UPDATE", curr_text)
 	        	screen_text = curr_text
 
 	        # print("going to return")
-	        return render_template('blog/index.html', screen_text=curr_text)
+	        return render_template('blog/index.html', screen_text=screen_text)
 
 	    # db = get_db()
 	    # posts = db.execute(
@@ -255,8 +264,9 @@ def create_app(test_config=None):
 	        global demo
 	        while not demo:
 	        	time.sleep(1)
+	        	#print("value of demo", demo)
 	        	pass
-	        print("demo is gn start")
+	        #print("demo is gn start")
 	        sustain_speech()
 
 	    thread = threading.Thread(target=run_demo)
