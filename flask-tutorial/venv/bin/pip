@@ -1,5 +1,4 @@
-#!/Users/pavitthrapandurangan/Documents/Projects/tartanhacks2019/flask-tutorial/venv/bin/python3
-
+#!/Users/pavitthrapandurangan/Documents/Projects/tartanhacks2019/flask-tutorial/venv/bin/python3.7
 # -*- coding: utf-8 -*-
 import re
 import sys

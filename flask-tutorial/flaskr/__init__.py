@@ -13,7 +13,7 @@ def after_this_request(f):
 	return f
 
 ###############################
-import azure.cognitiveservices.speech as speechsdk
+# import azure.cognitiveservices.speech as speechsdk
 import time
 import requests
 from pprint import pprint
@@ -32,10 +32,10 @@ service_region = "westus"
 key_phrase_api_url = text_analytics_base_url + "/keyPhrases"
 senti_phrase_api_url = text_analytics_base_url + "/sentiment"
 
-speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
+# speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
 
-# Set up the speech recognizer
-speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
+# # Set up the speech recognizer
+# speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
 
 done = False
 
@@ -136,11 +136,11 @@ def analyze_it(sentence, phrases):
 
 
 ##########################
-speech_recognizer.recognizing.connect(lambda evt: update_curr_text(evt.result.text))
-speech_recognizer.recognized.connect(lambda evt: analyze_speech(rec.join(evt.result.text)))
-speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
-speech_recognizer.session_stopped.connect(lambda evt: print('SESSION STOPPED {}'.format(evt)))
-speech_recognizer.canceled.connect(lambda evt: print('CANCELED {}'.format(evt)))
+# speech_recognizer.recognizing.connect(lambda evt: update_curr_text(evt.result.text))
+# speech_recognizer.recognized.connect(lambda evt: analyze_speech(rec.join(evt.result.text)))
+# speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
+# speech_recognizer.session_stopped.connect(lambda evt: print('SESSION STOPPED {}'.format(evt)))
+# speech_recognizer.canceled.connect(lambda evt: print('CANCELED {}'.format(evt)))
 # stop continuous recognition on either session stopped or canceled events
 
 #################################################
@@ -161,8 +161,8 @@ def stop_cb(evt):
 
  ################################################
 
-speech_recognizer.session_stopped.connect(stop_cb)
-speech_recognizer.canceled.connect(stop_cb)
+# speech_recognizer.session_stopped.connect(stop_cb)
+# speech_recognizer.canceled.connect(stop_cb)
 
 
 
